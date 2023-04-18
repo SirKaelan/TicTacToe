@@ -119,6 +119,7 @@ const isGameOver = (gameBoard) => {
   return gameOverData;
 };
 
+// This is the component
 const Board = () => {
   const boardData = useBoard();
   const changeTile = useChangeTile();
