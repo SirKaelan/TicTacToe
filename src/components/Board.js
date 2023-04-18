@@ -131,6 +131,7 @@ const Board = () => {
   const gameWinner = useGameWinner();
   const changeGameWinner = useChangeGameWinner();
 
+  // This is yet another comment
   React.useEffect(() => {
     if (!isGameActive) return;
 
