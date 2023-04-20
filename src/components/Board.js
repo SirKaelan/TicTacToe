@@ -154,15 +154,6 @@ const Board = () => {
     }
   });
 
-  // Maybe this can be extracted into a separate function?
-  // TODO: Logic most likely needs a review and a change
-  let gameOverMessage = null;
-  if (!isGameActive && gameWinner !== "" && gameWinner !== "draw") {
-    gameOverMessage = <p>Player {gameWinner} has won!</p>;
-  } else if (!isGameActive && gameWinner === "draw") {
-    gameOverMessage = <p>The game is a draw! No winners.</p>;
-  }
-
   return (
     // TODO: HTML structure might need to be reworked
     <>
@@ -212,7 +203,6 @@ const Board = () => {
           New Game
         </button>
       )}
-      {gameOverMessage}
       <GameOverMessage />
     </>
   );
