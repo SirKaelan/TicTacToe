@@ -15,6 +15,7 @@ import {
 import OTile from "./OTile";
 import XTile from "./XTile";
 import EmptyTile from "./EmptyTile";
+import GameOverMessage from "./GameOverMessage";
 
 import { GeneralUtils } from "./utils";
 import { BoardUtils } from "./utils";
@@ -119,7 +120,6 @@ const isGameOver = (gameBoard) => {
   return gameOverData;
 };
 
-// This is the component
 const Board = () => {
   const boardData = useBoard();
   const changeTile = useChangeTile();
@@ -131,7 +131,6 @@ const Board = () => {
   const gameWinner = useGameWinner();
   const changeGameWinner = useChangeGameWinner();
 
-  // This is yet another comment
   React.useEffect(() => {
     if (!isGameActive) return;
 
@@ -214,6 +213,7 @@ const Board = () => {
         </button>
       )}
       {gameOverMessage}
+      <GameOverMessage />
     </>
   );
 };
