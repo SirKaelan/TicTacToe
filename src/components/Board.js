@@ -15,6 +15,7 @@ import {
 import OTile from "./OTile";
 import XTile from "./XTile";
 import EmptyTile from "./EmptyTile";
+import GameOverMessage from "./GameOverMessage";
 
 import { GeneralUtils } from "./utils";
 import { BoardUtils } from "./utils";
@@ -119,7 +120,6 @@ const isGameOver = (gameBoard) => {
   return gameOverData;
 };
 
-// This is the component
 const Board = () => {
   const boardData = useBoard();
   const changeTile = useChangeTile();
@@ -131,7 +131,6 @@ const Board = () => {
   const gameWinner = useGameWinner();
   const changeGameWinner = useChangeGameWinner();
 
-  // This is yet another comment
   React.useEffect(() => {
     if (!isGameActive) return;
 
@@ -154,15 +153,6 @@ const Board = () => {
         return null;
     }
   });
-
-  // Maybe this can be extracted into a separate function?
-  // TODO: Logic most likely needs a review and a change
-  let gameOverMessage = null;
-  if (!isGameActive && gameWinner !== "" && gameWinner !== "draw") {
-    gameOverMessage = <p>Player {gameWinner} has won!</p>;
-  } else if (!isGameActive && gameWinner === "draw") {
-    gameOverMessage = <p>The game is a draw! No winners.</p>;
-  }
 
   return (
     // TODO: HTML structure might need to be reworked
@@ -213,7 +203,7 @@ const Board = () => {
           New Game
         </button>
       )}
-      {gameOverMessage}
+      <GameOverMessage />
     </>
   );
 };
