@@ -1,45 +1,21 @@
 import React from "react";
 import {
   useIsGameActive,
-  useChangeIsGameActive,
   useGameWinner,
-  useChangeCurrentPlayer,
   useNewGame,
+  useStartGame,
 } from "./BoardContext";
 
-import { BoardUtils } from "./utils";
-
-const onStartBtnClick = (
-  changeIsGameActive,
-  changeCurrentPlayer,
-  pickRandomPlayer
-) => {
-  // startGame();
-  changeIsGameActive(true);
-  changeCurrentPlayer(pickRandomPlayer());
-};
-
+// Component might become redundant?
 const GameButtons = () => {
   const isGameActive = useIsGameActive();
-  const changeIsGameActive = useChangeIsGameActive();
   const gameWinner = useGameWinner();
-  const changeCurrentPlayer = useChangeCurrentPlayer();
   const newGame = useNewGame();
+  const startGame = useStartGame();
 
+  // TODO: Fix conditional logic
   if (!isGameActive && gameWinner === "") {
-    return (
-      <button
-        onClick={() =>
-          onStartBtnClick(
-            changeIsGameActive,
-            changeCurrentPlayer,
-            BoardUtils.pickRandomPlayer
-          )
-        }
-      >
-        Start Game
-      </button>
-    );
+    return <button onClick={() => startGame()}>Start Game</button>;
   } else if (!isGameActive && gameWinner) {
     return <button onClick={() => newGame()}>New Game</button>;
   }
