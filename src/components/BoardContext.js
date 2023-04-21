@@ -58,8 +58,19 @@ export const useNewGame = () => {
 };
 
 export const useStartGame = () => {
-  // changeIsGameActive(true);
-  // changeCurrentPlayer(pickRandomPlayer());
+  const [_, setGameState] = React.useContext(BoardContext);
+
+  return () => {
+    const newGameState = (prevState) => {
+      return {
+        ...prevState,
+        isGameActive: true,
+        currentPlayer: BoardUtils.pickRandomPlayer(),
+      };
+    };
+
+    setGameState((prevState) => newGameState(prevState));
+  };
 };
 
 // stopGame
