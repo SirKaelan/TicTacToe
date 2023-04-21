@@ -3,9 +3,8 @@ import {
   useIsGameActive,
   useChangeIsGameActive,
   useGameWinner,
-  useChangeGameWinner,
   useChangeCurrentPlayer,
-  useResetBoard,
+  useNewGame,
 } from "./BoardContext";
 
 import { BoardUtils } from "./utils";
@@ -15,19 +14,7 @@ const onStartBtnClick = (
   changeCurrentPlayer,
   pickRandomPlayer
 ) => {
-  changeIsGameActive(true);
-  changeCurrentPlayer(pickRandomPlayer());
-};
-
-const onNewBtnClick = (
-  resetBoard,
-  changeGameWinner,
-  changeIsGameActive,
-  changeCurrentPlayer,
-  pickRandomPlayer
-) => {
-  resetBoard();
-  changeGameWinner("");
+  // startGame();
   changeIsGameActive(true);
   changeCurrentPlayer(pickRandomPlayer());
 };
@@ -36,9 +23,8 @@ const GameButtons = () => {
   const isGameActive = useIsGameActive();
   const changeIsGameActive = useChangeIsGameActive();
   const gameWinner = useGameWinner();
-  const changeGameWinner = useChangeGameWinner();
   const changeCurrentPlayer = useChangeCurrentPlayer();
-  const resetBoard = useResetBoard();
+  const newGame = useNewGame();
 
   if (!isGameActive && gameWinner === "") {
     return (
@@ -55,21 +41,7 @@ const GameButtons = () => {
       </button>
     );
   } else if (!isGameActive && gameWinner) {
-    return (
-      <button
-        onClick={() =>
-          onNewBtnClick(
-            resetBoard,
-            changeGameWinner,
-            changeIsGameActive,
-            changeCurrentPlayer,
-            BoardUtils.pickRandomPlayer
-          )
-        }
-      >
-        New Game
-      </button>
-    );
+    return <button onClick={() => newGame()}>New Game</button>;
   }
 };
 

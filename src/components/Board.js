@@ -9,6 +9,7 @@ import {
   useIsGameActive,
   useChangeIsGameActive,
   useChangeGameWinner,
+  useGameWinner,
 } from "./BoardContext";
 import OTile from "./OTile";
 import XTile from "./XTile";
@@ -105,6 +106,9 @@ const Board = () => {
   const isGameActive = useIsGameActive();
   const changeIsGameActive = useChangeIsGameActive();
   const changeGameWinner = useChangeGameWinner();
+  const gameWinner = useGameWinner();
+  const state = { boardData, currentPlayer, isGameActive, gameWinner };
+  console.log("State: ", state);
 
   React.useEffect(() => {
     if (!isGameActive) return;
