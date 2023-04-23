@@ -6,55 +6,19 @@ import {
   useChangeTile,
   useCurrentPlayer,
   useChangeCurrentPlayer,
-  useResetBoard,
   useIsGameActive,
   useChangeIsGameActive,
-  useGameWinner,
   useChangeGameWinner,
+  useGameWinner,
 } from "./BoardContext";
 import OTile from "./OTile";
 import XTile from "./XTile";
 import EmptyTile from "./EmptyTile";
 import GameOverMessage from "./GameOverMessage";
+import GameButtons from "./GameButtons";
 
 import { GeneralUtils } from "./utils";
 import { BoardUtils } from "./utils";
-
-const onTileClick =
-  (currentPlayer, changeTile, changeCurrentPlayer, isGameActive) => (event) => {
-    if (!isGameActive) return;
-
-    const tileEl = event.target;
-    if (!tileEl.classList.contains("tile") || tileEl.innerHTML !== "") return;
-
-    const tileIndex = BoardUtils.getTileIndex(tileEl);
-    const nextPlayer = currentPlayer === "X" ? "O" : "X";
-
-    changeTile(tileIndex, currentPlayer);
-    changeCurrentPlayer(nextPlayer);
-  };
-
-const onStartBtnClick = (
-  changeIsGameActive,
-  changeCurrentPlayer,
-  pickRandomPlayer
-) => {
-  changeIsGameActive(true);
-  changeCurrentPlayer(pickRandomPlayer());
-};
-
-const onNewBtnClick = (
-  resetBoard,
-  changeGameWinner,
-  changeIsGameActive,
-  changeCurrentPlayer,
-  pickRandomPlayer
-) => {
-  resetBoard();
-  changeGameWinner("");
-  changeIsGameActive(true);
-  changeCurrentPlayer(pickRandomPlayer());
-};
 
 const isGameOver = (gameBoard) => {
   let gameOverData = {
@@ -120,16 +84,31 @@ const isGameOver = (gameBoard) => {
   return gameOverData;
 };
 
+const onTileClick =
+  (currentPlayer, changeTile, changeCurrentPlayer, isGameActive) => (event) => {
+    if (!isGameActive) return;
+
+    const tileEl = event.target;
+    if (!tileEl.classList.contains("tile") || tileEl.innerHTML !== "") return;
+
+    const tileIndex = BoardUtils.getTileIndex(tileEl);
+    const nextPlayer = currentPlayer === "X" ? "O" : "X";
+
+    changeTile(tileIndex, currentPlayer);
+    changeCurrentPlayer(nextPlayer);
+  };
+
 const Board = () => {
   const boardData = useBoard();
   const changeTile = useChangeTile();
   const currentPlayer = useCurrentPlayer();
   const changeCurrentPlayer = useChangeCurrentPlayer();
-  const resetBoard = useResetBoard();
   const isGameActive = useIsGameActive();
   const changeIsGameActive = useChangeIsGameActive();
-  const gameWinner = useGameWinner();
   const changeGameWinner = useChangeGameWinner();
+  const gameWinner = useGameWinner();
+  const state = { boardData, currentPlayer, isGameActive, gameWinner };
+  console.log("State: ", state);
 
   React.useEffect(() => {
     if (!isGameActive) return;
@@ -174,35 +153,7 @@ const Board = () => {
         </div>
       </div>
       {/* TODO: Fix CSS for conditionally rendered content */}
-      {/* TODO: Somehow move conditional rendering logic */}
-      {!isGameActive && gameWinner === "" && (
-        <button
-          onClick={() =>
-            onStartBtnClick(
-              changeIsGameActive,
-              changeCurrentPlayer,
-              BoardUtils.pickRandomPlayer
-            )
-          }
-        >
-          Start Game
-        </button>
-      )}
-      {!isGameActive && gameWinner && (
-        <button
-          onClick={() =>
-            onNewBtnClick(
-              resetBoard,
-              changeGameWinner,
-              changeIsGameActive,
-              changeCurrentPlayer,
-              BoardUtils.pickRandomPlayer
-            )
-          }
-        >
-          New Game
-        </button>
-      )}
+      <GameButtons />
       <GameOverMessage />
     </>
   );

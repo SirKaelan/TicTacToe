@@ -1,4 +1,5 @@
 import React from "react";
+import { BoardUtils } from "./utils";
 
 // Maybe the context name needs to change
 export const BoardContext = React.createContext(null);
@@ -33,8 +34,49 @@ export const BoardProvider = ({ children }) => {
 
 // TODO: Rename all hooks if possible
 // Custom hooks
+export const useNewGame = () => {
+  const [_, setGameState] = React.useContext(BoardContext);
+
+  return () => {
+    const newGameState = (prevState) => {
+      const prevBoard = prevState.board;
+      const newBoard = prevBoard.map((tileValue) => {
+        return tileValue === "empty" ? tileValue : "empty";
+      });
+
+      return {
+        ...prevState,
+        board: newBoard,
+        gameWinner: "",
+        isGameActive: true,
+        currentPlayer: BoardUtils.pickRandomPlayer(),
+      };
+    };
+
+    setGameState((prevState) => newGameState(prevState));
+  };
+};
+
+export const useStartGame = () => {
+  const [_, setGameState] = React.useContext(BoardContext);
+
+  return () => {
+    const newGameState = (prevState) => {
+      return {
+        ...prevState,
+        isGameActive: true,
+        currentPlayer: BoardUtils.pickRandomPlayer(),
+      };
+    };
+
+    setGameState((prevState) => newGameState(prevState));
+  };
+};
+
+// stopGame
+
 export const useBoard = () => {
-  const [{ board }, _] = React.useContext(BoardContext);
+  const [{ board }] = React.useContext(BoardContext);
 
   return board;
 };
@@ -76,7 +118,7 @@ export const useChangeTile = () => {
 };
 
 export const useCurrentPlayer = () => {
-  const [{ currentPlayer }, _] = React.useContext(BoardContext);
+  const [{ currentPlayer }] = React.useContext(BoardContext);
 
   return currentPlayer;
 };
@@ -100,7 +142,7 @@ export const useChangeCurrentPlayer = () => {
 };
 
 export const useIsGameActive = () => {
-  const [{ isGameActive }, _] = React.useContext(BoardContext);
+  const [{ isGameActive }] = React.useContext(BoardContext);
 
   return isGameActive;
 };
@@ -121,7 +163,7 @@ export const useChangeIsGameActive = () => {
 };
 
 export const useGameWinner = () => {
-  const [{ gameWinner }, _] = React.useContext(BoardContext);
+  const [{ gameWinner }] = React.useContext(BoardContext);
 
   return gameWinner;
 };
