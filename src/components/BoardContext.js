@@ -75,6 +75,25 @@ export const useStartGame = () => {
 
 // stopGame
 
+// useSetTile - returns new board
+export const useSetTile = () => {
+  const [_, setGameState] = React.useContext(BoardContext);
+
+  return (tileIndex, tileValue) => {
+    const newGameState = (prevState) => {
+      const newBoard = [...prevState.board];
+      newBoard.splice(tileIndex, 1, tileValue);
+
+      return {
+        ...prevState,
+        board: newBoard,
+      };
+    };
+
+    setGameState((prevState) => newGameState(prevState));
+  };
+};
+
 export const useBoard = () => {
   const [{ board }] = React.useContext(BoardContext);
 
@@ -91,22 +110,6 @@ export const useResetBoard = () => {
     const newBoard = prevBoard.map((tileValue) => {
       return tileValue === "empty" ? tileValue : "empty";
     });
-
-    const newGameState = {
-      ...prevGameState,
-      board: newBoard,
-    };
-
-    setGameState(newGameState);
-  };
-};
-
-export const useChangeTile = () => {
-  const [prevGameState, setGameState] = React.useContext(BoardContext);
-
-  return (tileIndex, tileValue) => {
-    const newBoard = [...prevGameState.board];
-    newBoard.splice(tileIndex, 1, tileValue);
 
     const newGameState = {
       ...prevGameState,
@@ -182,5 +185,3 @@ export const useChangeGameWinner = () => {
     setGameState((prevState) => newGameState(prevState));
   };
 };
-
-// TODO: Maybe add general hooks that change multiple pieces of the state at once such as "startGame" and "restartGame"

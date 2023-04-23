@@ -3,7 +3,7 @@ import "./Board.css";
 
 import {
   useBoard,
-  useChangeTile,
+  useSetTile,
   useCurrentPlayer,
   useChangeCurrentPlayer,
   useIsGameActive,
@@ -16,7 +16,6 @@ import {
 import OTile from "./OTile";
 import XTile from "./XTile";
 import EmptyTile from "./EmptyTile";
-import GameOverMessage from "./GameOverMessage";
 import Button from "./Button";
 import Message from "./Message";
 
@@ -87,23 +86,23 @@ const isGameOver = (gameBoard) => {
   return gameOverData;
 };
 
-const onTileClick =
-  (currentPlayer, changeTile, changeCurrentPlayer, isGameActive) => (event) => {
+const handleTileClick =
+  (isGameActive, player, setTile, swapPlayer) => (event) => {
     if (!isGameActive) return;
 
     const tileEl = event.target;
     if (!tileEl.classList.contains("tile") || tileEl.innerHTML !== "") return;
 
     const tileIndex = BoardUtils.getTileIndex(tileEl);
-    const nextPlayer = currentPlayer === "X" ? "O" : "X";
+    const nextPlayer = player === "X" ? "O" : "X";
 
-    changeTile(tileIndex, currentPlayer);
-    changeCurrentPlayer(nextPlayer);
+    setTile(tileIndex, player);
+    swapPlayer(nextPlayer);
   };
 
 const Board = () => {
   const boardData = useBoard();
-  const changeTile = useChangeTile();
+  const setTile = useSetTile();
   const currentPlayer = useCurrentPlayer();
   const changeCurrentPlayer = useChangeCurrentPlayer();
   const isGameActive = useIsGameActive();
@@ -140,9 +139,9 @@ const Board = () => {
 
   let renderedButton;
   if (!isGameActive && gameWinner === "")
-    renderedButton = <Button handler={startGame} label="Start Game" />;
+    renderedButton = <Button onClick={startGame} label="Start Game" />;
   else if (!isGameActive && gameWinner)
-    renderedButton = <Button handler={newGame} label="New Game" />;
+    renderedButton = <Button onClick={newGame} label="New Game" />;
 
   let gameOverMsg;
   if (!isGameActive && (gameWinner === "X" || gameWinner === "O")) {
@@ -162,11 +161,11 @@ const Board = () => {
       <div className="board_container">
         <div
           className="grid"
-          onClick={onTileClick(
+          onClick={handleTileClick(
+            isGameActive,
             currentPlayer,
-            changeTile,
-            changeCurrentPlayer,
-            isGameActive
+            setTile,
+            changeCurrentPlayer
           )}
         >
           {renderedTiles}
