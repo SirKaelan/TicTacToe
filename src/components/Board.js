@@ -13,9 +13,9 @@ import {
   useNewGame,
   useStartGame,
 } from "./BoardContext";
-import OTile from "./OTile";
-import XTile from "./XTile";
-import EmptyTile from "./EmptyTile";
+import { OTile } from "./tiles";
+import { XTile } from "./tiles";
+import { EmptyTile } from "./tiles";
 import Button from "./Button";
 import Message from "./Message";
 
