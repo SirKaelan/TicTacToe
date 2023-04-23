@@ -10,12 +10,14 @@ import {
   useChangeIsGameActive,
   useChangeGameWinner,
   useGameWinner,
+  useNewGame,
+  useStartGame,
 } from "./BoardContext";
 import OTile from "./OTile";
 import XTile from "./XTile";
 import EmptyTile from "./EmptyTile";
 import GameOverMessage from "./GameOverMessage";
-import GameButtons from "./GameButtons";
+import Button from "./Button";
 
 import { GeneralUtils } from "./utils";
 import { BoardUtils } from "./utils";
@@ -107,6 +109,8 @@ const Board = () => {
   const changeIsGameActive = useChangeIsGameActive();
   const changeGameWinner = useChangeGameWinner();
   const gameWinner = useGameWinner();
+  const newGame = useNewGame();
+  const startGame = useStartGame();
   const state = { boardData, currentPlayer, isGameActive, gameWinner };
   console.log("State: ", state);
 
@@ -133,6 +137,12 @@ const Board = () => {
     }
   });
 
+  let renderedButton;
+  if (!isGameActive && gameWinner === "")
+    renderedButton = <Button handler={startGame} label="Start Game" />;
+  else if (!isGameActive && gameWinner)
+    renderedButton = <Button handler={newGame} label="New Game" />;
+
   return (
     // TODO: HTML structure might need to be reworked
     <>
@@ -153,7 +163,7 @@ const Board = () => {
         </div>
       </div>
       {/* TODO: Fix CSS for conditionally rendered content */}
-      <GameButtons />
+      {renderedButton}
       <GameOverMessage />
     </>
   );
