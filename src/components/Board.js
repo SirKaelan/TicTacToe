@@ -18,6 +18,7 @@ import XTile from "./XTile";
 import EmptyTile from "./EmptyTile";
 import GameOverMessage from "./GameOverMessage";
 import Button from "./Button";
+import Message from "./Message";
 
 import { GeneralUtils } from "./utils";
 import { BoardUtils } from "./utils";
@@ -143,6 +144,15 @@ const Board = () => {
   else if (!isGameActive && gameWinner)
     renderedButton = <Button handler={newGame} label="New Game" />;
 
+  let gameOverMsg;
+  if (!isGameActive && (gameWinner === "X" || gameWinner === "O")) {
+    const msgContent = `Player ${gameWinner} has won!`;
+    gameOverMsg = <Message content={msgContent} />;
+  } else if (!isGameActive && gameWinner === "draw") {
+    const msgContent = "The game is a draw! No winners.";
+    gameOverMsg = <Message content={msgContent} />;
+  }
+
   return (
     // TODO: HTML structure might need to be reworked
     <>
@@ -162,9 +172,8 @@ const Board = () => {
           {renderedTiles}
         </div>
       </div>
-      {/* TODO: Fix CSS for conditionally rendered content */}
       {renderedButton}
-      <GameOverMessage />
+      {gameOverMsg}
     </>
   );
 };
