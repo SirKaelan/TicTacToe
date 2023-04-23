@@ -6,6 +6,8 @@ import {
   useStartGame,
 } from "./BoardContext";
 
+import Button from "./Button";
+
 // Component might become redundant?
 const GameButtons = () => {
   const isGameActive = useIsGameActive();
@@ -15,9 +17,9 @@ const GameButtons = () => {
 
   // TODO: Fix conditional logic
   if (!isGameActive && gameWinner === "") {
-    return <button onClick={() => startGame()}>Start Game</button>;
+    return <Button handler={startGame} label="Start Game" />;
   } else if (!isGameActive && gameWinner) {
-    return <button onClick={() => newGame()}>New Game</button>;
+    return <Button handler={newGame} label="New Game" />;
   }
 };
 
