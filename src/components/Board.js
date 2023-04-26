@@ -1,5 +1,12 @@
 import React from "react";
 import "./Board.css";
+import { BoardUtils } from "./utils";
+
+import { OTile } from "./tiles";
+import { XTile } from "./tiles";
+import { EmptyTile } from "./tiles";
+import Button from "./Button";
+import Message from "./Message";
 
 import {
   useBoard,
@@ -13,13 +20,6 @@ import {
   useNewGame,
   useStartGame,
 } from "./BoardContext";
-import { OTile } from "./tiles";
-import { XTile } from "./tiles";
-import { EmptyTile } from "./tiles";
-import Button from "./Button";
-import Message from "./Message";
-
-import { BoardUtils } from "./utils";
 
 const handleTileClick =
   (isGameActive, player, setTile, swapPlayer) => (event) => {
